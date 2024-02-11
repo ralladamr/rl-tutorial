@@ -21,10 +21,10 @@ pub(crate) fn player_input(gs: &mut State, ctx: &mut Rltk) {
     match ctx.key {
         None => {} // Nothing happened
         Some(key) => match key {
-            VirtualKeyCode::H => try_move_player(-1, 0, &mut gs.ecs),
-            VirtualKeyCode::L => try_move_player(1, 0, &mut gs.ecs),
-            VirtualKeyCode::K => try_move_player(0, -1, &mut gs.ecs),
-            VirtualKeyCode::J => try_move_player(0, 1, &mut gs.ecs),
+            VirtualKeyCode::Left | VirtualKeyCode::H => try_move_player(-1, 0, &mut gs.ecs),
+            VirtualKeyCode::Right | VirtualKeyCode::L => try_move_player(1, 0, &mut gs.ecs),
+            VirtualKeyCode::Up | VirtualKeyCode::K => try_move_player(0, -1, &mut gs.ecs),
+            VirtualKeyCode::Down | VirtualKeyCode::J => try_move_player(0, 1, &mut gs.ecs),
             _ => {}
         },
     }

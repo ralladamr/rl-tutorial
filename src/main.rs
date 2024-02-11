@@ -1,10 +1,12 @@
-mod components;
-mod map;
-mod player;
+pub(crate) mod components;
+pub(crate) mod map;
+pub(crate) mod player;
+pub(crate) mod rect;
 
 pub(crate) use components::{Player, Position, Renderable};
-pub(crate) use map::{draw_map, new_map, xy_idx, TileType};
+pub(crate) use map::{draw_map, new_map_rooms_and_corridors, xy_idx, TileType};
 pub(crate) use player::player_input;
+pub(crate) use rect::Rect;
 use rltk::{GameState, Rltk, RGB};
 use specs::prelude::*;
 
@@ -44,11 +46,16 @@ fn main() -> rltk::BError {
     gs.ecs.register::<Renderable>();
     gs.ecs.register::<Player>();
 
-    gs.ecs.insert(new_map());
+    let (rooms, map) = new_map_rooms_and_corridors();
+    gs.ecs.insert(map);
+    let (player_x, player_y) = rooms[0].center();
 
     gs.ecs
         .create_entity()
-        .with(Position { x: 40, y: 25 })
+        .with(Position {
+            x: player_x,
+            y: player_y,
+        })
         .with(Renderable {
             glyph: rltk::to_cp437('@'),
             fg: RGB::named(rltk::YELLOW),
